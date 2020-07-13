@@ -60,16 +60,18 @@ class Pokemon:
     # method for attacking another pokemon
     def attack(self, opponent_pokemon):
         # if opponent_pokemon is knocked out
-        if opponent_pokemon.knock_out():
-            print("That pokemon is knocked out, attack a different one!")
+        if self.is_knocked_out:
+            print("{name} is knocked out. You need to switch pokemon!".format(name=self.name))
         # damage dealt is super effective
-        if (self.type == "Fire" and opponent_pokemon.type == "Grass") or (self.type == "Water" and opponent_pokemon.type == "Fire"):
+        if (self.type == "Fire" and opponent_pokemon.type == "Grass") or (self.type == "Water" and opponent_pokemon.type == "Fire") or (self.type == "Grass" and opponent_pokemon.type == "Water"):
             opponent_pokemon.take_damage(self.level * 2)
             print(self.name + " dealt " + str(self.level * 2) + " damage to " + opponent_pokemon.name)
+            print("It's super effective!")
         # damage dealt is not very effective
-        if (self.type == "Grass" and opponent_pokemon.type == "Fire") or (self.type == "Fire" and opponent_pokemon.type == "Water"):
+        if (self.type == "Grass" and opponent_pokemon.type == "Fire") or (self.type == "Fire" and opponent_pokemon.type == "Water") or (self.type == "Water" and opponent_pokemon.type == "Grass"):
             opponent_pokemon.take_damage(self.level * 0.5)
             print(self.name + " dealt " + str(self.level * 0.5) + " damage to " + opponent_pokemon.name)
+            print("It's not very effective!")
         if self.type == opponent_pokemon.type:
             opponent_pokemon.take_damage(self.level * 0.68)
             print(self.name + " dealt " + str(self.level * 0.68) + " damage to " + opponent_pokemon.name)
