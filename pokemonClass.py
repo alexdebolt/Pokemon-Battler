@@ -3,7 +3,7 @@
 # class to construct pokemon and battle related methods
 class Pokemon:
     #constructor method
-    def __init__(self, name, type, level = 2):
+    def __init__(self, name, type, next_evolution_name, level = 2):
         self.name = name
         self.type = type
         self.level = level
@@ -11,6 +11,8 @@ class Pokemon:
         self.max_health = level * 5
         self.is_knocked_out = False
         self.experience = 0
+        self.level_to_evolve = 0
+        self.next_evolution_name = next_evolution_name
 
     def __repr__(self):
         return self.name + " is level " + str(self.level) + ", " + self.type + " type, and has " + str(self.health) + " health left."
@@ -74,23 +76,21 @@ class Pokemon:
             print(self.name + " dealt " + str(self.level) + " damage to " + opponent_pokemon.name)
             opponent_pokemon.take_damage(self.level)
     
+    # method to give experience to pokemon who knocked out oppponent pokemon
     def gain_experience(self, opponent_pokemon):
         self.experience += opponent_pokemon.level
         print("{name} has gained {experience} experience points".format(name=self.name, experience=opponent_pokemon.level))
-        if self.experience >= 50:
+        # if experiences reaches 50 then the pokemon levels ups
+        if self.experience >= 20:
             self.level += 1
+            # the extra experience over 50 gets rolled over to the next level experience starting at zero
             residual_experience = self.experience - 50
             self.experience = residual_experience
             print("{name} has leveled up to level {level}".format(name=self.name, level=self.level))
+        if self.level == self.level_to_evolve:
+            self.evolution()
 
-
-
-
-
-
-
-
-
-
-
-
+    # method to evolve pokemon when level to evolve has been reached
+    def evolution(self):
+        print("Congratulations, your {name} is evolving into {evolution}!!!".format(name=self.name, evolution=self.next_evolution_name))
+        self.name = self.next_evolution_name
