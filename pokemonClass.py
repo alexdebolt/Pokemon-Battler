@@ -10,6 +10,7 @@ class Pokemon:
         self.health = level * 5
         self.max_health = level * 5
         self.is_knocked_out = False
+        self.experience = 0
 
     def __repr__(self):
         return self.name + " is level " + str(self.level) + ", " + self.type + " type, and has " + str(self.health) + " health left."
@@ -32,6 +33,7 @@ class Pokemon:
         if self.health != 0:
             self.health = 0
         print("{name} has been knocked out".format(name=self.name))
+
     
     # method for pokemon to regain health
     def gain_health(self, health_boost):
@@ -41,7 +43,7 @@ class Pokemon:
         # caps health so doesn't go over max health
         if self.health >= self.max_health:
             self.health = self.max_health
-        print("{name} gained {health} health points!".format(name=self.name, health=health_boost))
+        print("{name} was treated with a potion!".format(name=self.name))
         print("{name} now has {health} health!".format(name=self.name, health=self.health))
 
     # method for reviving pokemon
@@ -51,6 +53,7 @@ class Pokemon:
         if self.health == 0:
             self.health = 1
         print("{name} has been revived, go get em!".format(name=self.name))
+        
 
     # method for attacking another pokemon
     def attack(self, opponent_pokemon):
@@ -70,7 +73,15 @@ class Pokemon:
         if self.type == opponent_pokemon.type:
             print(self.name + " dealt " + str(self.level) + " damage to " + opponent_pokemon.name)
             opponent_pokemon.take_damage(self.level)
-        
+    
+    def gain_experience(self, opponent_pokemon):
+        self.experience += opponent_pokemon.level
+        print("{name} has gained {experience} experience points".format(name=self.name, experience=opponent_pokemon.level))
+        if self.experience >= 50:
+            self.level += 1
+            residual_experience = self.experience - 50
+            self.experience = residual_experience
+            print("{name} has leveled up to level {level}".format(name=self.name, level=self.level))
 
 
 

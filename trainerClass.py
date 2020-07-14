@@ -20,7 +20,7 @@ class Trainer:
         if self.potions > 0:
             self.pokemons[self.current_pokemon].gain_health(15)
             self.potions -= 1
-            print("You have {potions} potions left.".format(potions=self.potions))
+            print("{name} has {potions} potions left.".format(name=self.name, potions=self.potions))
         else:
             print("You are out of potions. Sorry that's tough :(")
     
@@ -28,7 +28,12 @@ class Trainer:
     def attack_opponent_pokemon(self, opponent_trainer):
         my_pokemon = self.pokemons[self.current_pokemon]
         opponent_pokemon = opponent_trainer.pokemons[opponent_trainer.current_pokemon]
-        my_pokemon.attack(opponent_pokemon)
+        if opponent_pokemon.health > 0:
+            my_pokemon.attack(opponent_pokemon)
+            if opponent_pokemon.health == 0:
+                my_pokemon.gain_experience(opponent_pokemon)
+        else:
+            print("That Pokemon has already fainted")
     
     # method to switch pokemon
     def switch_current_pokemon(self, new_active_pokemon):
