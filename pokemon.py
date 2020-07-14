@@ -13,12 +13,6 @@ class Pokemon:
 
     def __repr__(self):
         return self.name + " is level " + str(self.level) + " and " + self.type + " type! and has " + str(self.health) + " health left."
-        # if self.health < (0.5 * self.max_health):
-        #     return self.your_pokemon, self.name + " has " + str(self.health) + " health left! You might want to heal"
-        # elif self.health == self.max_health:
-        #     return self.your_pokemon, self.name + " is max health!"
-        # else:
-        #     return self.your_pokemon, self.name + " has " + str(self.health) + ". Fight on!!"
 
     # method for pokemon to take damage
     def take_damage(self, damage_given):
@@ -29,7 +23,7 @@ class Pokemon:
             self.health = 0
             self.knock_out()
         else:
-            print("{name} now has {health} health points left".format(self.name, self.health))
+            print("{name} now has {health} health points left".format(name=self.name,health=self.health))
 
     # method for knocking out pokemon aka when health == 0
     def knock_out(self):
@@ -73,13 +67,15 @@ class Pokemon:
             print(self.name + " dealt " + str(self.level * 0.5) + " damage to " + opponent_pokemon.name)
             print("It's not very effective!")
         if self.type == opponent_pokemon.type:
-            opponent_pokemon.take_damage(self.level * 0.68)
-            print(self.name + " dealt " + str(self.level * 0.68) + " damage to " + opponent_pokemon.name)
+            opponent_pokemon.take_damage(round(self.level * 0.68, 2))
+            print(self.name + " dealt " + str(round(self.level * 0.68, 2)) + " damage to " + opponent_pokemon.name)
         
 
 charizard = Pokemon("Charizard", "Fire", 25)
 blastoise = Pokemon("Blastoise", "Water", 35)
 venosaur = Pokemon("Venosaur", "Grass", 50)
+ninetails = Pokemon("Ninetails", "Fire", 28)
+poliwhirl = Pokemon("Poliwhirl", "Water", 32)
 
 
 
@@ -90,13 +86,13 @@ class Trainer:
         self.name = name
         self.pokemons = pokemon_list
         self.potions = potions
-        self.current_pokemon = 0
+        self.current_pokemon = pokemon_list[0]
     
     def __repr__(self):
         print("The trainer is named {name} and has the following pokemon:".format(name=self.name))
         for pokemon in self.pokemons:
             print(pokemon)
-        return "The current pokemon is {name}".format(name = self.pokemons[self.current_pokemon].name)
+        return "The current pokemon is {name}".format(name = self.current_pokemon)
     
     # method to heal current pokemon
     def use_potion(self, potions):
@@ -109,8 +105,8 @@ class Trainer:
     
     # method to attack other trainer's pokemon
     def attack_opponent_pokemon(self, opponent_trainer):
-        opponent_pokemon = opponent_trainer.pokemons[opponent_trainer.current_pokemon]
-        self.pokemons[self.current_pokemon].attack(opponent_pokemon)
+        opponent_pokemon = opponent_trainer.current_pokemon
+        self.current_pokemon.attack(opponent_pokemon)
     
     # method to switch pokemon
     def switch_current_pokemon(self, new_active_pokemon):
@@ -124,12 +120,13 @@ class Trainer:
             print("Go {name}! I know you can do it!".format(name=self.pokemons[self.current_pokemon].name))
 
 Ash = Trainer("Ash", [charizard, venosaur, blastoise], 5)
-print(Ash)
-
-
-
-
-
+Gary = Trainer("Gary", [ninetails, poliwhirl], 4)
+# print(Ash)
+# print(Gary)
+print(Ash.current_pokemon)
+print(Gary.current_pokemon)
+Ash.attack_opponent_pokemon(Gary)
+Gary.attack_opponent_pokemon(Ash)
 
 
 
